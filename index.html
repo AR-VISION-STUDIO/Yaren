@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0714">
+<meta name="description" content="Een klein universum, speciaal gemaakt voor Yaren.">
+<title>Voor Yaren ✦ Een klein universum</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0b0714;
+  --bg2: #171027;
+  --surface: rgba(255,255,255,.065);
+  --surface2: rgba(255,255,255,.105);
+  --border: rgba(255,255,255,.12);
+  --text: #faf7ff;
+  --muted: #bdb2d3;
+  --purple: #b39aff;
+  --pink: #f3b2f3;
+  --shadow: 0 24px 80px rgba(0,0,0,.2);
+  --radius: 28px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 12% 8%, #39204e 0, transparent 35%),
+    radial-gradient(ellipse at 90% 35%, #251540 0, transparent 34%),
+    var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: background .35s, color .35s;
+}
+body.light {
+  color-scheme: light;
+  --bg: #f7f2ff;
+  --bg2: #eee5fc;
+  --surface: rgba(255,255,255,.68);
+  --surface2: rgba(255,255,255,.88);
+  --border: rgba(65,40,100,.13);
+  --text: #21152e;
+  --muted: #6d5e7e;
+  --purple: #7652c5;
+  --pink: #bd65b8;
+  --shadow: 0 24px 70px rgba(69,35,100,.09);
+  background:
+    radial-gradient(ellipse at 12% 8%, #e5d3ff 0, transparent 35%),
+    radial-gradient(ellipse at 90% 35%, #f7dafa 0, transparent 34%),
+    var(--bg);
+}
+button, a { -webkit-tap-highlight-color: transparent; }
+button, input { font: inherit; }
+a { color: inherit; }
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 4px;
+}
+#stars {
+  position: fixed; inset: 0;
+  z-index: -1; pointer-events: none;
+  width: 100%; height: 100%;
+}
+.wrap { width: min(1080px, calc(100% - 34px)); margin-inline: auto; }
+nav {
+  position: sticky; top: 10px; z-index: 20;
+  width: min(1080px, calc(100% - 24px));
+  margin: 10px auto 0; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 20px;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+.brand { font-size: 16px; font-weight: 750; letter-spacing: -.4px; white-space: nowrap; }
+.brand span { color: var(--pink); }
+.navlinks { display: flex; gap: 17px; align-items: center; flex-wrap: wrap; }
+.navlinks a {
+  font-size: 12px; color: var(--muted); text-decoration: none;
+  transition: color .2s;
+}
+.navlinks a:hover { color: var(--text); }
+.nav-actions { display: flex; gap: 8px; }
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text);
+}
+section { padding: 82px 0; }
+.hero {
+  min-height: 78vh; display: grid; place-items: center;
+  text-align: center; padding-top: 80px;
+}
+.eyebrow {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 20px;
+}
+h1 {
+  font-size: clamp(45px, 8vw, 88px);
+  line-height: 1.02; letter-spacing: -4px; margin: 0;
+}
+h1 em { color: var(--pink); font-style: normal; }
+h2 {
+  font-size: clamp(30px, 5vw, 48px);
+  letter-spacing: -1.7px; line-height: 1.1; margin: 0 0 16px;
+}
+h3 { margin: 0 0 10px; font-size: 19px; letter-spacing: -.3px; }
+p { color: var(--muted); line-height: 1.8; }
+.hero-copy { max-width: 610px; margin: 24px auto 30px; font-size: 16px; }
+.buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.btn {
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 13px 19px; display: inline-flex; align-items: center;
+  justify-content: center; gap: 8px; text-decoration: none;
+  color: var(--text); cursor: pointer;
+  background: linear-gradient(120deg, rgba(179,154,255,.22), rgba(243,178,243,.13));
+  transition: transform .18s, background .18s;
+}
+.btn:hover { transform: translateY(-2px); background: var(--surface2); }
+.btn.secondary { background: var(--surface); }
+.btn:active { transform: scale(.98); }
+.section-head { text-align: center; margin: 0 auto 34px; max-width: 720px; }
+.section-head p { max-width: 620px; margin: 0 auto; }
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.countdown {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 12px; max-width: 800px; margin: 30px auto 20px;
+}
+.timebox { padding: 24px 8px; text-align: center; }
+.timebox strong {
+  display: block; font-size: clamp(29px, 6vw, 53px);
+  letter-spacing: -2px; font-variant-numeric: tabular-nums;
+}
+.timebox span {
+  color: var(--muted); font-size: 11px;
+  text-transform: uppercase; letter-spacing: 1.5px;
+}
+.center { text-align: center; }
+.small { font-size: 12px; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.card {
+  padding: 26px; min-height: 185px;
+  transition: transform .2s, border-color .2s;
+}
+.card:hover { transform: translateY(-3px); border-color: rgba(200,166,255,.38); }
+.card p { font-size: 14px; margin: 0; }
+.symbol { font-size: 28px; display: block; margin-bottom: 17px; }
+.wide { grid-column: 1 / -1; }
+.cake {
+  text-align: center; padding: 42px 24px;
+  background: linear-gradient(135deg, rgba(243,178,243,.12), rgba(179,154,255,.1));
+  overflow: hidden;
+}
+.cake-art {
+  font-size: clamp(68px, 12vw, 100px);
+  margin: 8px 0 15px;
+}
+.cake h3 { font-size: 25px; }
+.cake p { max-width: 590px; margin: 0 auto 20px; }
+.panel { padding: 30px; }
+.idea-output {
+  min-height: 60px; margin: 20px 0;
+  color: var(--text); font-size: 20px; line-height: 1.6;
+}
+.letter { text-align: center; padding: 35px 24px; }
+.letter-content {
+  display: none; max-width: 650px; text-align: left; margin: 24px auto 0;
+}
+.letter-content.open { display: block; animation: appear .45s ease both; }
+.letter-content p { line-height: 1.95; }
+.letter-quote { color: var(--pink); font-size: clamp(20px, 4vw, 28px); line-height: 1.5 !important; }
+.wish {
+  min-height: 80px; font-size: 19px; line-height: 1.6;
+  color: var(--text); margin: 20px 0;
+}
+.divider { height: 1px; background: var(--border); margin: 24px 0; }
+footer { text-align: center; padding: 25px 15px 55px; color: var(--muted); font-size: 12px; }
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+#toast {
+  position: fixed; z-index: 50; bottom: 22px; left: 50%;
+  transform: translate(-50%, 15px); opacity: 0; pointer-events: none;
+  padding: 12px 17px; border: 1px solid var(--border);
+  border-radius: 999px; background: var(--bg2); color: var(--text);
+  font-size: 13px; transition: opacity .2s, transform .2s;
+  box-shadow: var(--shadow); max-width: calc(100% - 30px); text-align: center;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+@keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 720px) {
+  nav { gap: 11px; }
+  .navlinks { order: 3; width: 100%; gap: 14px; }
+  .navlinks a { font-size: 11px; }
+  .nav-actions { margin-left: auto; }
+  section { padding: 64px 0; }
+  .hero { min-height: 70vh; padding-top: 60px; }
+  h1 { letter-spacing: -2.5px; }
+  .grid { grid-template-columns: 1fr; }
+  .wide { grid-column: auto; }
+  .countdown { gap: 7px; }
+  .timebox { padding: 17px 3px; border-radius: 19px; }
+  .timebox span { font-size: 9px; letter-spacing: .5px; }
+  .panel { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<nav aria-label="Hoofdnavigatie">
+  <a class="brand" href="#home" style="text-decoration:none">yaren<span> ✦</span></a>
+  <div class="navlinks">
+    <a href="#verjaardag">Verjaardag</a>
+    <a href="#wereld">Haar wereld</a>
+    <a href="#ontdekken">Ontdekken</a>
+    <a href="#brief">Een brief</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" id="themeToggle" type="button" aria-label="Wissel van thema" title="Wissel van thema">☼</button>
+  </div>
+</nav>
+
+<main>
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="eyebrow">Een klein universum, speciaal voor jou</div>
+    <h1>Een beetje<br>heel veel <em>Yaren.</em></h1>
+    <p class="hero-copy">
+      Tussen alle sterren is er maar één jij.
+      Daarom verdient jouw kleine hoekje van het universum iets bijzonders.
+    </p>
+    <div class="buttons">
+      <a class="btn" href="#verjaardag">Ontdek jouw verrassing <span>↓</span></a>
+      <button class="btn secondary" id="surpriseBtn" type="button">Verras me ✦</button>
+    </div>
+    <p class="small">Met aandacht gemaakt, speciaal voor jou.</p>
+  </div>
+</section>
+
+<section id="verjaardag" class="reveal">
+  <div class="section-head">
+    <div class="eyebrow">Een bijzondere datum</div>
+    <h2>Tot jouw verjaardag</h2>
+    <p>Op 17 januari is er weer een reden om jou extra in het zonnetje te zetten.</p>
+  </div>
+  <div class="countdown">
+    <div class="glass timebox"><strong id="days">000</strong><span>Dagen</span></div>
+    <div class="glass timebox"><strong id="hours">00</strong><span>Uren</span></div>
+    <div class="glass timebox"><strong id="minutes">00</strong><span>Minuten</span></div>
+    <div class="glass timebox"><strong id="seconds">00</strong><span>Seconden</span></div>
+  </div>
+  <p class="center small" id="countdownMessage" aria-live="polite">Elke seconde een beetje dichterbij ✦</p>
+</section>
+
+<section id="wereld" class="reveal">
+  <div class="section-head">
+    <div class="eyebrow">De kleine dingen die jou jou maken</div>
+    <h2>Welkom in jouw wereld</h2>
+    <p>Soms zeggen de kleine dingen meer dan duizend woorden.</p>
+  </div>
+
+  <div class="grid">
+    <article class="glass card">
+      <span class="symbol">🍓</span>
+      <h3>Aardbei & vanille</h3>
+      <p>Een zachte, zoete combinatie en jouw favoriete soort taart. Een klein detail dat een feestdag nog leuker maakt.</p>
+    </article>
+    <article class="glass card">
+      <span class="symbol">🌙</span>
+      <h3>De kunst van lekker slapen</h3>
+      <p>Soms is een warm bed, een zacht kussen en even nergens aan hoeven denken precies wat je nodig hebt.</p>
+    </article>
+    <article class="glass card">
+      <span class="symbol">🧭</span>
+      <h3>Altijd iets nieuws</h3>
+      <p>Je houdt ervan om eropuit te gaan en nieuwe dingen te proberen. Het leven is tenslotte veel te groot om steeds hetzelfde te doen.</p>
+    </article>
+    <article class="glass card">
+      <span class="symbol">💭</span>
+      <h3>Een hart dat veel opmerkt</h3>
+      <p>Je denkt aan anderen, onthoudt kleine details en probeert rekening te houden met de mensen om je heen. Dat maakt jou bijzonder.</p>
+    </article>
+    <article class="glass card wide">
+      <span class="symbol">💜</span>
+      <h3>Je hoeft niet altijd alles te dragen</h3>
+      <p>Je mag ook moe zijn, rust nemen en eens aan jezelf denken. Je hoeft niet altijd alles perfect te doen of iedereen tevreden te houden. Jij verdient net zoveel zachtheid als je aan anderen geeft.</p>
+    </article>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="glass cake">
+    <div class="eyebrow">Een klein verjaardagsdroompje</div>
+    <div class="cake-art" aria-hidden="true">🎂</div>
+    <h3>Aardbeien, vanille en een beetje magie</h3>
+    <p>Een heerlijke taart, mooie wensen en een nieuw jaar vol herinneringen die je later met een glimlach terughaalt.</p>
+    <button class="btn" id="cakeBtn" type="button">Doe een wens ✨</button>
+    <p id="cakeWish" class="small" aria-live="polite"></p>
+  </div>
+</section>
+
+<section id="ontdekken" class="reveal">
+  <div class="section-head">
+    <div class="eyebrow">Voor iemand die graag op ontdekking gaat</div>
+    <h2>Wat zullen we vandaag doen?</h2>
+    <p>Geen eindeloze routine. Gewoon een klein idee om de dag net iets anders te maken.</p>
+  </div>
+  <div class="glass panel center">
+    <span class="symbol">✨</span>
+    <h3>Een idee voor een nieuwe herinnering</h3>
+    <div class="idea-output" id="ideaOutput" aria-live="polite">Druk op de knop en ontdek een idee.</div>
+    <button class="btn" id="ideaBtn" type="button">Geef me een idee ↗</button>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <article class="glass card">
+      <span class="symbol">🌆</span>
+      <h3>Een nieuwe plek</h3>
+      <p>Een onbekend straatje, een mooie zonsondergang of een plek waar je nog nooit bent geweest.</p>
+    </article>
+    <article class="glass card">
+      <span class="symbol">🎨</span>
+      <h3>Iets voor de eerste keer</h3>
+      <p>Een nieuw recept, een creatieve uitdaging of iets leren waar je eerder nooit aan gedacht had.</p>
+    </article>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="section-head">
+    <div class="eyebrow">Een klein moment voor jezelf</div>
+    <h2>Een wens voor jou</h2>
+    <p>Omdat je soms ook gewoon iets liefs mag horen.</p>
+  </div>
+  <div class="glass panel center">
+    <div class="wish" id="wishOutput" aria-live="polite">Ik wens je dagen waarop je veel kunt lachen en avonden waarop je met een rustig hart in slaap valt.</div>
+    <button class="btn secondary" id="wishBtn" type="button">Nog een lieve wens ♡</button>
+  </div>
+</section>
+
+<section id="brief" class="reveal">
+  <div class="glass letter">
+    <div class="eyebrow">Alleen voor jou</div>
+    <h2>Een klein briefje</h2>
+    <p>Er staat iets voor je klaar. Open het wanneer je er zin in hebt.</p>
+    <button class="btn" id="letterBtn" type="button" aria-expanded="false" aria-controls="letterContent">Open het briefje ♡</button>
+    <div class="letter-content" id="letterContent">
+      <p class="letter-quote">“De mooiste details zijn vaak de dingen die iemand doet zonder er zelf bij stil te staan.”</p>
+      <p>
+        Yaren, je hebt iets moois in je manier van denken.
+        Je merkt kleine dingen op, je houdt rekening met anderen en je probeert mensen om je heen niet te vergeten.
+        Dat zijn eigenschappen die misschien vanzelfsprekend lijken, maar dat helemaal niet zijn.
+      </p>
+      <p>
+        Ik hoop dat je nieuwe jaar gevuld is met fijne verrassingen, leuke uitstapjes,
+        genoeg rust, veel gelach en momenten waarop je trots bent op jezelf.
+        Blijf nieuwe dingen ontdekken, blijf dromen en vergeet vooral niet om ook lief te zijn voor jezelf.
+      </p>
+      <p>Je hoeft niet perfect te zijn om bijzonder te zijn. Je mag gewoon jezelf zijn. ♡</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>Een klein universum, met zorg gemaakt voor Yaren.</p>
+  <p>Voor de mooie dingen die nog komen. ✦</p>
+  <button class="btn secondary" id="topBtn" type="button">Terug naar boven ↑</button>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+// Verjaardag: 17 januari. De teller kiest automatisch het volgende jaar.
+function nextBirthday() {
+  const now = new Date();
+  let target = new Date(now.getFullYear(), 0, 17, 0, 0, 0);
+  if (now >= target) target = new Date(now.getFullYear() + 1, 0, 17, 0, 0, 0);
+  return target;
+}
+
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, "0");
+
+function updateCountdown() {
+  const now = new Date();
+  const target = nextBirthday();
+  const left = Math.max(0, target.getTime() - now.getTime());
+  const total = Math.floor(left / 1000);
+
+  $("days").textContent = String(Math.floor(total / 86400)).padStart(3, "0");
+  $("hours").textContent = pad(Math.floor((total % 86400) / 3600));
+  $("minutes").textContent = pad(Math.floor((total % 3600) / 60));
+  $("seconds").textContent = pad(total % 60);
+
+  $("countdownMessage").textContent =
+    "Nog even tot 17 januari " + target.getFullYear() + " ✦";
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Een melding onderaan, zonder externe bibliotheken.
+let toastTimer;
+function toast(message) {
+  const el = $("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+}
+
+// Verrassing: navigeert naar een willekeurige persoonlijke sectie.
+$("surpriseBtn").addEventListener("click", () => {
+  const destinations = ["verjaardag", "wereld", "ontdekken", "brief"];
+  const id = destinations[Math.floor(Math.random() * destinations.length)];
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+  toast("Een klein plekje speciaal voor jou ✦");
+});
+
+// Brief openen en sluiten.
+$("letterBtn").addEventListener("click", () => {
+  const content = $("letterContent");
+  const isOpen = content.classList.toggle("open");
+  $("letterBtn").textContent = isOpen ? "Briefje sluiten ↑" : "Open het briefje ♡";
+  $("letterBtn").setAttribute("aria-expanded", String(isOpen));
+  if (isOpen) content.scrollIntoView({ behavior: "smooth", block: "nearest" });
+});
+
+// Ideeën: allemaal activiteiten zonder dierencontact.
+const ideas = [
+  "Zoek een plek in de buurt waar je nog nooit bent geweest.",
+  "Maak een lijst met vijf dingen die je dit jaar wilt proberen.",
+  "Kies een nieuw recept en maak er een gezellige avond van.",
+  "Ga tijdens zonsondergang een stukje wandelen en maak een foto.",
+  "Ontdek een nieuw liedje of een nieuwe artiest.",
+  "Maak een mini-fotoreeks van vijf mooie dingen die je vandaag ziet.",
+  "Plan een uitstapje naar een stad die je nog wilt ontdekken.",
+  "Probeer iets creatiefs: tekenen, schrijven of een kleine DIY.",
+  "Maak je favoriete warme drankje en neem bewust even rust.",
+  "Kies een filmgenre dat je normaal nooit zou bekijken.",
+  "Zoek een nieuw dessertidee met aardbei of vanille.",
+  "Schrijf drie dingen op waar je later met plezier aan terug wilt denken."
+];
+let previousIdea = -1;
+$("ideaBtn").addEventListener("click", () => {
+  let index;
+  do { index = Math.floor(Math.random() * ideas.length); }
+  while (ideas.length > 1 && index === previousIdea);
+  previousIdea = index;
+  $("ideaOutput").textContent = ideas[index];
+});
+
+// Wensen: een nieuwe zin bij iedere klik.
+const wishes = [
+  "Ik wens je dagen vol gelach en nachten waarin je met een rustig hart in slaap valt.",
+  "Ik hoop dat je vaak verrast wordt door kleine dingen die je dag mooier maken.",
+  "Ik wens je moed om nieuwe dingen te proberen en rust wanneer je die nodig hebt.",
+  "Ik hoop dat je omringd wordt door mensen bij wie je helemaal jezelf kunt zijn.",
+  "Ik wens je herinneringen die je later opnieuw laten glimlachen.",
+  "Ik hoop dat je dromen steeds een stukje dichterbij komen.",
+  "Ik wens je genoeg avontuur om je te blijven verwonderen en genoeg rust om ervan te genieten.",
+  "Ik hoop dat je net zo veel vriendelijkheid ontvangt als je zelf aan anderen geeft."
+];
+let previousWish = -1;
+$("wishBtn").addEventListener("click", () => {
+  let index;
+  do { index = Math.floor(Math.random() * wishes.length); }
+  while (wishes.length > 1 && index === previousWish);
+  previousWish = index;
+  $("wishOutput").textContent = wishes[index];
+});
+
+// Verjaardagstaart: kleine interactieve wens.
+const cakeWishes = [
+  "Moge er dit jaar extra veel moois op je pad komen. ♡",
+  "Vergeet niet een wens te doen — je weet maar nooit. ✨",
+  "Een nieuw jaar, nieuwe plekken en herinneringen om te bewaren.",
+  "Ik hoop dat jouw nieuwe levensjaar zachter en mooier voelt dan je verwacht."
+];
+$("cakeBtn").addEventListener("click", () => {
+  $("cakeWish").textContent = cakeWishes[Math.floor(Math.random() * cakeWishes.length)];
+});
+
+// Thema wisselen. De voorkeur wordt alleen lokaal bewaard wanneer beschikbaar.
+const themeToggle = $("themeToggle");
+try {
+  if (localStorage.getItem("yaren-theme") === "light") document.body.classList.add("light");
+} catch (_) {}
+function updateThemeButton() {
+  const light = document.body.classList.contains("light");
+  themeToggle.textContent = light ? "☾" : "☼";
+  themeToggle.setAttribute("aria-label", light ? "Schakel naar het donkere thema" : "Schakel naar het lichte thema");
+}
+updateThemeButton();
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  try {
+    localStorage.setItem("yaren-theme", document.body.classList.contains("light") ? "light" : "dark");
+  } catch (_) {}
+  updateThemeButton();
+});
+
+// Terug naar boven.
+$("topBtn").addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Scrollanimaties: observer stopt met volgen zodra een sectie zichtbaar is.
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if ("IntersectionObserver" in window && !reduceMotion) {
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    }
+  }, { threshold: 0.08 });
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+} else {
+  document.querySelectorAll(".reveal").forEach(el => el.classList.add("visible"));
+}
+
+// Efficiënte sterrenhemel: beperkte hoeveelheid sterren en maximale pixelratio.
+// De animatie volgt de schermverversing; de hardware bepaalt de maximale FPS.
+const canvas = $("stars");
+const ctx = canvas.getContext("2d", { alpha: true });
+let stars = [];
+let w = 0, h = 0, raf = 0, lastDraw = 0;
+const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+function resizeCanvas() {
+  w = window.innerWidth;
+  h = window.innerHeight;
+  canvas.width = Math.floor(w * dpr);
+  canvas.height = Math.floor(h * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const count = Math.min(105, Math.max(35, Math.floor(w * h / 12500)));
+  stars = Array.from({ length: count }, () => ({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    r: Math.random() * 1.15 + .25,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * .7 + .2
+  }));
+}
+function drawStars(timestamp) {
+  if (reduceMotion || document.hidden) {
+    raf = 0;
+    return;
+  }
+  // Op tragere apparaten de canvas niet onnodig vaak opnieuw tekenen.
+  if (timestamp - lastDraw < 20) {
+    raf = requestAnimationFrame(drawStars);
+    return;
+  }
+  lastDraw = timestamp;
+  ctx.clearRect(0, 0, w, h);
+  const time = timestamp * .001;
+  const light = document.body.classList.contains("light");
+  for (const s of stars) {
+    const alpha = .28 + .48 * ((Math.sin(time * s.speed + s.phase) + 1) / 2);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = light
+      ? `rgba(105,75,155,${alpha * .55})`
+      : `rgba(230,215,255,${alpha})`;
+    ctx.fill();
+  }
+  raf = requestAnimationFrame(drawStars);
+}
+function startStars() {
+  if (!reduceMotion && !document.hidden && !raf) raf = requestAnimationFrame(drawStars);
+}
+function stopStars() {
+  if (raf) cancelAnimationFrame(raf);
+  raf = 0;
+}
+resizeCanvas();
+startStars();
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(resizeCanvas, 120);
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) stopStars();
+  else startStars();
+});
+</script>
+</body>
+</html>
